@@ -47,6 +47,7 @@ def gather():
     digits = request.form['Digits']
     dest = section.get_digit_destination(digits)
     resps = section.get_digit_response(digits, language)
+    section.get_digit_action(digits)(request, section)
     new_lang = section.changed_language(digits)
     if new_lang:
         language = new_lang

@@ -1,3 +1,5 @@
+from request_actions import RequestActions
+
 RAW_SECTIONS = {
     "START": {
         'num_digits_to_collect': 1,
@@ -10,12 +12,7 @@ RAW_SECTIONS = {
         'digits':{
             "1":{
                 "destination": "MAINMENU",
-                "new_language": "english",
-                "responses": {
-                    "english": "",
-                    "spanish": "",
-                    "robot": "Affirmative. This is english."
-                }
+                "new_language": "english"
             },
             "2":{
                 "destination": "MAINMENU",
@@ -80,6 +77,7 @@ RAW_SECTIONS = {
         },
         'digits':{
             "1":{
+                "action": RequestActions.schedule_callback,
                 "destination": "BYE",
                 "responses": {
                     "english": "",
@@ -101,6 +99,7 @@ RAW_SECTIONS = {
         },
         'digits':{
             "1":{
+                "action": RequestActions.notify_punters,
                 "destination": "BYE",
                 "responses": {
                     "english": "",
@@ -109,6 +108,7 @@ RAW_SECTIONS = {
                 }
             },
             "2":{
+                "action": RequestActions.schedule_callback,
                 "destination": "BYE",
                 "responses": {
                     "english": "",
@@ -205,6 +205,9 @@ class Section(object):
             else:
                 retVal.append(SectionResponse(p, False))
         return retVal
+
+    def get_digit_action(self, digits):
+        return self.digits_dict.get(digits, {}).get('action', lambda r, s: None)
 
 SECTIONS = {}
 for name, sect in RAW_SECTIONS.iteritems():
