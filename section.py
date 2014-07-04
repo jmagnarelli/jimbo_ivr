@@ -30,7 +30,7 @@ RAW_SECTIONS = {
         'num_digits_to_collect': 1,
         'prompt':{
             "english": "",
-            "spanish": "",
+            "spanish": "Si, es espanol.",
             "robot": "This is the main menu. To return here at any time, press star. For Information about me, press 1. For Contact information and procedures, press 2. If you want to go to Punter's, press 3. For a mystery surprise, press 4. If you want to play a game, press 5. If you've changed your mind about Punter's, press 6. If this is an urgent matter, and you need to be put through to me directly, press 0. To repeat these options, press star."
         },
         "digits":{
@@ -151,7 +151,7 @@ class Section(object):
         self.name = name
         self.prompt = prompt
         self.gather_num_digits = gather_num_digits
-        self.digits_dict = dict(digits_dict.items() + {"*": ({}, "MAINMENU")})
+        self.digits_dict = dict(digits_dict.items() + {"*": ({}, "MAINMENU")}.items())
 
     def changed_language(self, digits):
         return self.digits_dict.get(digits, {}).get('new_language', False)
@@ -160,14 +160,16 @@ class Section(object):
         return self.digits_dict.get(digits, {}).get('destination', 'BYE')
 
     def get_digit_response(self, digits, language):
-        return self.digits_dicts.get(digits, {}).get('responses', {}).get(language, 'Invalid input. Sorry about that')
+        if digits not in self.digits_dict:
+            return "Invalid input. Sorry about that."
+        return self.digits_dict[digits].get('responses', {}).get(language, '')
 
     def get_prompt(self, language):
         return self.prompt.get(language, '')
 
 SECTIONS = {}
-for name, sect in RAW_SECTIONS:
+for name, sect in RAW_SECTIONS.iteritems():
     SECTIONS[name] = Section(name,
                              sect['prompt'],
                              sect['num_digits_to_collect'],
-                             sect['digits'])
+                             sect.get('digits', {}))

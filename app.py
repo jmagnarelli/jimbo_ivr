@@ -4,7 +4,7 @@ from flask import Flask, request
 
 from twilio import twiml
 
-from old_section import SECTIONS
+from section import SECTIONS
 
 # Declare and configure application
 app = Flask(__name__)
