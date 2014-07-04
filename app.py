@@ -18,15 +18,23 @@ def voice():
     section_name = request.args.get('section', 'START')
     section = SECTIONS[section_name]
 
-    prompt = section.get_prompt(language)
+    prompts = section.get_prompt(language)
     response = twiml.Response()
     if section.gather_num_digits:
         with response.gather(numDigits=section.gather_num_digits, action="/ivr/gather?section=" + section_name,
                             timeout=DEFAULT_TIMEOUT) as gatherer:
-            gatherer.say(prompt)
+            for prompt in prompts:
+                if prompt.should_say:
+                    gatherer.say(prompt.text)
+                else:
+                    gatherer.play(prompt.text)
             # gather.play("path_to_greeting") # TODO (jmagnarelli): customize this per-caller if recognized
     else:
-        response.say(prompt)
+        for prompt in prompts:
+            if prompt.should_say:
+                response.say(prompt.text)
+            else:
+                response.play(prompt.text)
     return str(response)
 
 @app.route('/ivr/gather', methods=['POST'])
@@ -38,11 +46,16 @@ def gather():
     response = twiml.Response()
     digits = request.form['Digits']
     dest = section.get_digit_destination(digits)
-    resp = section.get_digit_response(digits, language)
+    resps = section.get_digit_response(digits, language)
     new_lang = section.changed_language(digits)
     if new_lang:
         language = new_lang
-    response.say(resp)
+    for resp in resps:
+        if resp.should_say:
+            response.say(resp.text)
+        else:
+            response.play(resp.text)
+
     response.redirect("/ivr/voice?section=" + dest + "&language=" + language)
     return str(response)
 

@@ -72,7 +72,10 @@ RAW_SECTIONS = {
         'prompt':{
             "english": "",
             "spanish": "",
-            "robot": "Blah, blah, blah. This is my contact information. To leave a number for me to call back later, press 1. To return to the start menu, press star."
+            "robot": "For my website, head to w w w dot magnarelli dot org . That's m a g n a r e l l i dot org. You"
+                     "can email me at j m a g n a r e at gmail dot com. If you'd like me to call you later at this"
+                     "number, press 1. If this is an urgent matter, and you need to be put through to me directly,"
+                     "press 0. To return to the start menu, press star."
         },
         'digits':{
             "1":{
@@ -80,8 +83,11 @@ RAW_SECTIONS = {
                 "responses": {
                     "english": "",
                     "spanish": "",
-                    "robot": "Great, you left a number!"
+                    "robot": "Great. I will call you back later at this number."
                 }
+            },
+            "0":{
+                "destination": "PUTTHROUGH"
             }
         }
     },
@@ -114,9 +120,10 @@ RAW_SECTIONS = {
     "MYSTERY":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "",
-            "spanish": "",
-            "robot": "This is a MYSTERY!!!"
+            "english": "/sounds/heman_long.mp3; To repeat this message, press 1. To return to the main menu,"
+                       "press star",
+            "spanish": "/sounds/heman_long.mp3",
+            "robot": "/sounds/heman_long.mp3; This is a MYSTERY!!!"
         }
 
     },
@@ -146,6 +153,16 @@ RAW_SECTIONS = {
     }
 }
 
+
+class SectionResponse(object):
+    def __init__(self, text, is_link):
+        self.text = text
+        self.is_link = is_link
+
+    @property
+    def should_say(self):
+        return not self.is_link
+
 class Section(object):
     def __init__(self, name, prompt, gather_num_digits, digits_dict={}):
         self.name = name
@@ -162,10 +179,27 @@ class Section(object):
     def get_digit_response(self, digits, language):
         if digits not in self.digits_dict:
             return "Invalid input. Sorry about that."
-        return self.digits_dict[digits].get('responses', {}).get(language, '')
+        resp = self.digits_dict[digits].get('responses', {}).get(language, '')
+        resps = resp.split(';')
+        retVal = []
+        for r in resps:
+            if r.startswith('/'):
+                retVal.append(SectionResponse(r, True))
+            else:
+                retVal.append(SectionResponse(r, False))
+        return retVal
+
 
     def get_prompt(self, language):
-        return self.prompt.get(language, '')
+        prompt = self.prompt.get(language, '')
+        prompts = prompt.split(';')
+        retVal = []
+        for p in prompts:
+            if p.startswith('/'):
+                retVal.append(SectionResponse(p, True))
+            else:
+                retVal.append(SectionResponse(p, False))
+        return retVal
 
 SECTIONS = {}
 for name, sect in RAW_SECTIONS.iteritems():
