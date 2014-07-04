@@ -4,7 +4,8 @@ RAW_SECTIONS = {
         'prompt':{
             "english": "",
             "spanish": "",
-            "robot": "Hello there. This is James Magnarelli. For English, press 1. Para espanol, marque numero dos. For a robot, press 3."
+            "robot": "Hello there. This is James Magnarelli. For English, press 1. Para espanol, marque numero dos."
+                     "For a robot, press 3."
         },
         'digits':{
             "1":{
@@ -120,10 +121,14 @@ RAW_SECTIONS = {
     "MYSTERY":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "/sounds/heman_long.mp3; To repeat this message, press 1. To return to the main menu,"
-                       "press star",
-            "spanish": "/sounds/heman_long.mp3",
-            "robot": "/sounds/heman_long.mp3; This is a MYSTERY!!!"
+            "english": "/sounds/heman_short.mp3",
+            "spanish": "/sounds/heman_short.mp3",
+            "robot": "/sounds/heman_short.mp3; To repeat this message, press 1. To return to the main menu, press star."
+        },
+        'digits':{
+            "1":{
+                "destination": "MYSTERY"
+            }
         }
 
     },
@@ -168,7 +173,7 @@ class Section(object):
         self.name = name
         self.prompt = prompt
         self.gather_num_digits = gather_num_digits
-        self.digits_dict = dict(digits_dict.items() + {"*": ({}, "MAINMENU")}.items())
+        self.digits_dict = dict(digits_dict.items() + {"*": {'destination': "MAINMENU"}}.items())
 
     def changed_language(self, digits):
         return self.digits_dict.get(digits, {}).get('new_language', False)
