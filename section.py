@@ -128,7 +128,7 @@ RAW_SECTIONS = {
     "MYSTERY":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "/sounds/heman_short.mp3; /sounds/voice/repeat_surprise.aif",
+            "english": "/sounds/heman_short.mp3;/sounds/voice/repeat_surprise.aif",
             "spanish": "/sounds/heman_short.mp3",
             "robot": "/sounds/heman_short.mp3; To repeat the surprise, press 1. To return to the main menu, press star."
         },
@@ -150,9 +150,9 @@ RAW_SECTIONS = {
     "PUTTHROUGH":{
         'num_digits_to_collect': 0,
         'prompt':{
-            "english": "/counds/voice/putthrough_cellphone.aif",
+            "english": "Sorry. I haven't built this feature yet. It's on my to-do list. In the meantime, feel free to call me.",#"/sounds/voice/putthrough_cellphone.aif",
             "spanish": "",
-            "robot": "You are being put through to me. Please standby."
+            "robot": "Sorry. I haven't built this feature yet. It's on my to-do list. In the meantime, feel free to call me.",#"You are being put through to me. Please standby."
         }
     },
     "BYE":{
