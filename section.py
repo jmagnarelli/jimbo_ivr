@@ -145,7 +145,7 @@ RAW_SECTIONS = {
         'prompt':{
             "english": "",
             "spanish": "",
-            "robot": "You are standing at the end of a road..."
+            "robot": "Sorry. I haven't built this yet. Please feel free to contact me and complain. Press star to go back to the main menu."
         }
     },
     "PUTTHROUGH":{
