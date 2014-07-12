@@ -1,4 +1,5 @@
 from request_actions import RequestActions
+from secrets import james_number
 
 RAW_SECTIONS = {
     "START": {
@@ -149,10 +150,11 @@ RAW_SECTIONS = {
     },
     "PUTTHROUGH":{
         'num_digits_to_collect': 0,
+        'num_to_dial': james_number,
         'prompt':{
-            "english": "Sorry. I haven't built this feature yet. It's on my to-do list. In the meantime, feel free to call me.",#"/sounds/voice/putthrough_cellphone.aif",
+            "english": "/sounds/voice/putthrough_cellphone.aif",
             "spanish": "",
-            "robot": "Sorry. I haven't built this feature yet. It's on my to-do list. In the meantime, feel free to call me.",#"You are being put through to me. Please standby."
+            "robot": "You are being put through to me. Please standby."
         }
     },
     "BYE":{
@@ -167,19 +169,21 @@ RAW_SECTIONS = {
 
 
 class SectionResponse(object):
-    def __init__(self, text, is_link):
+    def __init__(self, text, is_link, dial_num=""):
         self.text = text
         self.is_link = is_link
+        self.dial_num = dial_num
 
     @property
     def should_say(self):
         return not self.is_link
 
 class Section(object):
-    def __init__(self, name, prompt, gather_num_digits, digits_dict={}):
+    def __init__(self, name, prompt, gather_num_digits, digits_dict={}, num_to_dial=""):
         self.name = name
         self.prompt = prompt
         self.gather_num_digits = gather_num_digits
+        self.num_to_dial = num_to_dial
         self.digits_dict = dict(digits_dict.items() + {"*": {'destination': "MAINMENU"}}.items())
 
     def changed_language(self, digits):
@@ -195,10 +199,7 @@ class Section(object):
         resps = resp.split(';')
         retVal = []
         for r in resps:
-            if r.startswith('/'):
-                retVal.append(SectionResponse(r, True))
-            else:
-                retVal.append(SectionResponse(r, False))
+            retVal.append(SectionResponse(r, r.startswith('/'), self.num_to_dial))
         return retVal
 
 
@@ -207,10 +208,7 @@ class Section(object):
         prompts = prompt.split(';')
         retVal = []
         for p in prompts:
-            if p.startswith('/'):
-                retVal.append(SectionResponse(p, True))
-            else:
-                retVal.append(SectionResponse(p, False))
+            retVal.append(SectionResponse(p, p.startswith('/'), self.num_to_dial))
         return retVal
 
     def get_digit_action(self, digits):
@@ -221,4 +219,5 @@ for name, sect in RAW_SECTIONS.iteritems():
     SECTIONS[name] = Section(name,
                              sect['prompt'],
                              sect['num_digits_to_collect'],
-                             sect.get('digits', {}))
+                             sect.get('digits', {}),
+                             sect.get('num_to_dial', ""))

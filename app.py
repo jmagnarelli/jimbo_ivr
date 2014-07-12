@@ -35,6 +35,8 @@ def voice():
                 response.say(prompt.text)
             else:
                 response.play(prompt.text)
+            if prompt.dial_num:
+                response.dial(prompt.dial_num)
     return str(response)
 
 @app.route('/ivr/gather', methods=['POST'])
@@ -56,6 +58,9 @@ def gather():
             response.say(resp.text)
         else:
             response.play(resp.text)
+        if resp.dial_num:
+            response.dial(resp.dial_num)
+
 
     response.redirect("/ivr/voice?section=" + dest + "&language=" + language)
     return str(response)
