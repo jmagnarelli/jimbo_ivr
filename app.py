@@ -14,7 +14,7 @@ DEFAULT_TIMEOUT = 60
 @app.route('/ivr/voice', methods=['POST'])
 def voice():
     # Get the current conversation node
-    language = request.args.get('language', 'robot')
+    language = request.args.get('language', 'english')
     section_name = request.args.get('section', 'START')
     section = SECTIONS[section_name]
 
@@ -39,7 +39,7 @@ def voice():
 
 @app.route('/ivr/gather', methods=['POST'])
 def gather():
-    language = request.args.get('language', 'robot')
+    language = request.args.get('language', 'english')
     section_name = request.args.get('section', 'START')
     section = SECTIONS[section_name]
 
