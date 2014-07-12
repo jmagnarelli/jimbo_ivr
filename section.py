@@ -4,7 +4,7 @@ RAW_SECTIONS = {
     "START": {
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "",
+            "english": "/sounds/voice/welcome.aif",
             "spanish": "",
             "robot": "Hello there. This is James Magnarelli. For English, press 1. Para espanol, marque numero dos."
                      "For a robot, press 3."
@@ -16,7 +16,12 @@ RAW_SECTIONS = {
             },
             "2":{
                 "destination": "MAINMENU",
-                "new_language": "spanish"
+                "new_language": "english",
+                "responses": {
+                    "english": "/sounds/voice/english_instead_sorry.aif",
+                    "spanish": "",
+                    "robot": ""
+                }
             },
             "3":{
                 "destination": "MAINMENU",
@@ -27,7 +32,7 @@ RAW_SECTIONS = {
     "MAINMENU":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "",
+            "english": "/sounds/voice/mainmenu.aif",
             "spanish": "Si, es espanol.",
             "robot": "This is the main menu. To return here at any time, press star. For Information about me, press 1. For Contact information and procedures, press 2. If you want to go to Punter's, press 3. For a mystery surprise, press 4. If you want to play a game, press 5. If you've changed your mind about Punter's, press 6. If this is an urgent matter, and you need to be put through to me directly, press 0. To repeat these options, press star."
         },
@@ -60,18 +65,20 @@ RAW_SECTIONS = {
     "INFO":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "",
+            "english": "/sounds/voice/info.aif",
             "spanish": "",
-            "robot": "This is my personal information. To return to the start menu, press star."
+            "robot": "'m a 22-year-old software engineer and student in Boston, Massachusetts. I'm currently a co-op"
+                     "at HubSpot, and a student at Northeastern University. For more information, visit my website at"
+                     "magnarelli.org. That's m-a-g-n-a-r-e-l-l-i dot org. To return to the main menu, press star."
         }
     },
     "CONTACT":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "",
+            "english": "/sounds/voice/contact.aif",
             "spanish": "",
-            "robot": "For my website, head to w w w dot magnarelli dot org . That's m a g n a r e l l i dot org. You"
-                     "can email me at j m a g n a r e at gmail dot com. If you'd like me to call you later at this"
+            "robot": "For my website, head to w-w-w dot magnarelli dot org . That's m-a-g-n-a-r-e-l-l-i dot org. You"
+                     "can email me at j-m-a-g-n-a-r-e at gmail dot com. If you'd like me to call you later at this"
                      "number, press 1. If this is an urgent matter, and you need to be put through to me directly,"
                      "press 0. To return to the start menu, press star."
         },
@@ -80,7 +87,7 @@ RAW_SECTIONS = {
                 "action": RequestActions.schedule_callback,
                 "destination": "BYE",
                 "responses": {
-                    "english": "",
+                    "english": "/sounds/voice/scheduled_callback.aif",
                     "spanish": "",
                     "robot": "Great. I will call you back later at this number."
                 }
@@ -93,7 +100,7 @@ RAW_SECTIONS = {
     "PUNTERS":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "",
+            "english": "/sounds/voice/lets_go_to_punters.aif",
             "spanish": "",
             "robot": "You like Punter's, too? Awesome. Let's go together. If you'd like to meet there now, press 1. If you'd like to meet there later, press 2 to leave your number for a callback. To return to the start menu, press star"
         },
@@ -102,7 +109,7 @@ RAW_SECTIONS = {
                 "action": RequestActions.notify_punters,
                 "destination": "BYE",
                 "responses": {
-                    "english": "",
+                    "english": "/sounds/voice/notified_of_punters_lets_go.aif",
                     "spanish": "",
                     "robot": "Sweet. Let's go."
                 }
@@ -111,7 +118,7 @@ RAW_SECTIONS = {
                 "action": RequestActions.schedule_callback,
                 "destination": "BYE",
                 "responses": {
-                    "english": "",
+                    "english": "/sounds/voice/scheduled_callback.aif",
                     "spanish": "",
                     "robot": "Great, you left a number!"
                 }
@@ -121,9 +128,9 @@ RAW_SECTIONS = {
     "MYSTERY":{
         'num_digits_to_collect': 1,
         'prompt':{
-            "english": "/sounds/heman_short.mp3",
+            "english": "/sounds/heman_short.mp3; /sounds/voice/repeat_surprise.aif",
             "spanish": "/sounds/heman_short.mp3",
-            "robot": "/sounds/heman_short.mp3; To repeat this message, press 1. To return to the main menu, press star."
+            "robot": "/sounds/heman_short.mp3; To repeat the surprise, press 1. To return to the main menu, press star."
         },
         'digits':{
             "1":{
@@ -143,7 +150,7 @@ RAW_SECTIONS = {
     "PUTTHROUGH":{
         'num_digits_to_collect': 0,
         'prompt':{
-            "english": "",
+            "english": "/counds/voice/putthrough_cellphone.aif",
             "spanish": "",
             "robot": "You are being put through to me. Please standby."
         }
@@ -151,7 +158,7 @@ RAW_SECTIONS = {
     "BYE":{
         'num_digits_to_collect': 0,
         'prompt':{
-            "english": "",
+            "english": "/sounds/voice/thanks_bye.aif",
             "spanish": "",
             "robot": "Goodbye"
         }
