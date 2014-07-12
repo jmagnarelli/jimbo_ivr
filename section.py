@@ -184,7 +184,8 @@ class Section(object):
         self.prompt = prompt
         self.gather_num_digits = gather_num_digits
         self.num_to_dial = num_to_dial
-        self.digits_dict = dict(digits_dict.items() + {"*": {'destination': "MAINMENU"}}.items())
+        self.digits_dict = dict(digits_dict.items() + {"*": {'destination': "MAINMENU"},
+                                                       "0": {'destination': "PUTTHROUGH"}}.items())
 
     def changed_language(self, digits):
         return self.digits_dict.get(digits, {}).get('new_language', False)
