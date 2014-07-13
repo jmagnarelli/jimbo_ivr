@@ -21,8 +21,8 @@ def voice():
     prompts = section.get_prompt(language)
     response = twiml.Response()
     if section.gather_num_digits:
-        with response.gather(numDigits=section.gather_num_digits, action="/ivr/gather?section=" + section_name,
-                            timeout=DEFAULT_TIMEOUT) as gatherer:
+        with response.gather(numDigits=section.gather_num_digits, action="/ivr/gather?section=" + section_name
+                             + "&language=" + language, timeout=DEFAULT_TIMEOUT) as gatherer:
             for prompt in prompts:
                 if prompt.should_say:
                     gatherer.say(prompt.text)
