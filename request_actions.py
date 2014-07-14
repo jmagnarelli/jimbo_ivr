@@ -9,15 +9,13 @@ class RequestActions(object):
     @staticmethod
     def notify_punters(request, section):
         from_number = request.values.get('From', '')
-        msg = "Someone from your IVR wants to go to Punter's. Oh, Joy! Their phone number is {0}, and " \
-              "their section was {1}".format(from_number, section.name)
+        msg = "Immediate Punter's request received. Phone number={0}, section={1}".format(from_number, section.name)
         message = client.messages.create(to=james_number, from_=ivr_number, body=msg)
         print message.sid
 
     @staticmethod
     def schedule_callback(request, section):
         from_number = request.values.get('From', '')
-        msg = "Someone from your IVR wants to be called back. Oh, Joy! Their phone number is {0}, and their " \
-              "section was {1}".format(from_number, section.name)
+        msg = "Callback request received. Phone number={0}, section={1}".format(from_number, section.name)
         message = client.messages.create(to=james_number, from_=ivr_number, body=msg)
         print message.sid
